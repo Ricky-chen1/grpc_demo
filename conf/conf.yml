@@ -1,0 +1,26 @@
+server:
+  name: "grpc_demo"
+  jwt-secret: ccczzz
+
+services:
+  api:
+    name: api
+    addr: 
+      - 127.0.0.1:10001
+
+  user:
+    name: user
+    addr: 
+      - 127.0.0.1:10002
+
+  task:
+    name: task
+    addr: 
+      - 127.0.0.1:10003
+
+mysql:
+  username: root
+  password: cyj18859062686.
+  database: grpc_demo
+  addr: 127.0.0.1:3306
+  charset: utf8mb4

@@ -1,0 +1,81 @@
+syntax = "proto3";
+option go_package = "./pb/task";
+
+package task;
+
+//待办事项模块微服务
+service TaskService {
+    rpc CreateTask(CreateReq) returns (CreateRes) {}
+    rpc GetListTask(GetListReq) returns (GetListRes) {}
+    rpc SearchTask(SearchReq) returns (SearchRes) {}
+    rpc UpdataTask(UpdateReq) returns (UpdateRes) {}
+    rpc DeleteTask(DeleteReq) returns (DeleteRes) {}
+}
+
+message Task{
+    string id = 1;
+    string user_id = 2;
+    int64 status = 3;
+    string title = 4;
+    string content = 5;
+    string create_at = 6;
+    string update_at = 7;
+}
+
+message Base{
+    uint64 code = 1;
+    string message = 2;
+}
+
+message CreateReq{
+    string user_id = 1;
+    string title = 2;
+    string content = 3;
+}
+
+message CreateRes{
+    Base base = 1;
+    Task task = 2;
+}
+
+message GetListReq{
+    int64 status = 1;
+    int64 page_size = 2;
+    int64 page_num = 3;
+}
+
+message GetListRes{
+    Base base = 1;
+    repeated Task task = 2;
+}
+
+message UpdateReq{
+    string id = 1;
+    string title = 2;
+    string content = 3;
+    int64 status = 4;
+}
+
+message UpdateRes{
+    Base base = 1;
+    Task task = 2;
+}
+
+message SearchReq{
+    string key = 1;
+    int64 page_size = 2;
+    int64 page_num = 3;
+}
+
+message SearchRes{
+    Base base = 1;
+    repeated Task task = 2;
+}
+
+message DeleteReq{
+    string id = 1;
+}
+
+message DeleteRes{
+    Base base = 1;
+}

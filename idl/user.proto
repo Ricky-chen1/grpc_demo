@@ -1,0 +1,39 @@
+syntax = "proto3";
+option go_package = "./pb/user";
+
+package user;
+
+//用户模块微服务
+service UserService{
+    rpc UserRegister(RegisterReq) returns (RegisterRes){}
+    rpc UserLogin(LoginReq) returns (LoginRes){}
+}
+
+message User{
+    string id = 1;
+    string username = 2;
+}
+
+message Base{
+    uint64 code = 1;
+    string message = 2;
+}
+
+message RegisterReq{
+    string username = 1;
+    string password = 2;
+}
+
+message RegisterRes{
+    Base base = 1;
+}
+
+message LoginReq{
+    string username = 1;
+    string password = 2;
+}
+
+message LoginRes{
+    Base base = 1;
+    User user = 2;
+}

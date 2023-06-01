@@ -11,12 +11,14 @@ import (
 	"google.golang.org/grpc"
 )
 
+func Init(){
+     	conf.Init()
+     	db.Init()
+}
 // task moudle grpc server start
 func main() {
-	//数据库初始化
-	db.Init()
-	conf.Init()
-
+	Init()
+	
 	grpcAddress := conf.C.Services["task"].Addr[0]
 	lis, err := net.Listen("tcp", grpcAddress)
 	if err != nil {

@@ -18,14 +18,6 @@ func NewUserService() *UserService {
 
 func (us *UserService) UserRegister(ctx context.Context, req *user.RegisterReq) (*user.RegisterRes, error) {
 	res := new(user.RegisterRes)
-	//参数校验放在服务端实现?
-	if len(req.Username) < 3 || len(req.Username) > 12 ||
-		len(req.Password) < 10 || len(req.Password) > 16 {
-		res.Base.Code = errno.ParamsInvalid
-		res.Base.Message = errno.CodeTag[errno.ParamsInvalid]
-		e := errno.NewErrno(errno.ParamsInvalid)
-		return res, &e
-	}
 
 	//数据库交互
 	if err := db.CreateUser(req); err != nil {

@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"grpc_demo/idl/pb/user"
+
+	"github.com/sirupsen/logrus"
 )
 
 // user moudle grpc client call
@@ -11,6 +13,7 @@ func UserRegister(ctx context.Context, req *user.RegisterReq) error {
 	_, err := userClient.UserRegister(ctx, req)
 
 	if err != nil {
+		logrus.Info("user error happened--------------")
 		return errors.New("user rpc call failed")
 	}
 	return nil

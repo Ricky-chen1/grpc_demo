@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"grpc_demo/conf"
 	"time"
 
@@ -24,9 +25,10 @@ func SignToken(id string) (string, error) {
 
 	jwtToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	token, err := jwtToken.SignedString(conf.C.Server.Secret)
+	token, err := jwtToken.SignedString(conf.Server.Secret)
+	fmt.Println(conf.Server.Secret, "-------------------------------")
+
 	if err != nil {
-		//日志記錄
 		return "", err
 	}
 	return token, nil
@@ -34,7 +36,7 @@ func SignToken(id string) (string, error) {
 
 func ParseToken(token string) (*Claims, error) {
 	jwtToken, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return conf.C.Server.Secret, nil
+		return conf.Server.Secret, nil
 	})
 
 	if err != nil {

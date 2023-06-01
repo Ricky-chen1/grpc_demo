@@ -19,8 +19,8 @@ services:
       - 127.0.0.1:10003
 
 mysql:
-  username: root
-  password: cyj18859062686.
+  username: grpc_demo
+  password: grpc_demo
   database: grpc_demo
   addr: 127.0.0.1:3306
   charset: utf8mb4

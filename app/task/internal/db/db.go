@@ -33,7 +33,8 @@ func GetTaskList(req *task.GetListReq) ([]model.Task, error) {
 
 func SearchTask(req *task.SearchReq) ([]model.Task, error) {
 	var tasks []model.Task
-	if err := DB.Model(&model.Task{}).Where("content LIKE ? OR title LIKE ?", req.Key, req.Key).Find(&tasks).
+	if err := DB.Model(&model.Task{}).Where("content LIKE ? OR title LIKE ?",
+		("%" + req.Key + "%"), ("%" + req.Key + "%")).Find(&tasks).
 		Limit(int(req.PageSize)).Offset((int(req.PageNum) - 1) * int(req.PageSize)).Error; err != nil {
 		return nil, err
 	}
@@ -47,7 +48,7 @@ func UpdateTask(req *task.UpdateReq) (*model.Task, error) {
 		return nil, err
 	}
 	task.Status = int(req.Status)
-	if err := DB.Model(&model.Task{}).Save(&task).Error; err != nil {
+	if err := DB.Model(&model.Task{}).Where("id = ?", req.Id).Save(&task).Error; err != nil {
 		return nil, err
 	}
 	return &task, nil

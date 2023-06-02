@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"grpc_demo/app/task/internal/db"
 	"grpc_demo/app/task/internal/pack"
 	"grpc_demo/idl/pb/task"
@@ -20,16 +19,15 @@ func NewTaskService() *TaskService {
 func (ts *TaskService) TaskCreate(ctx context.Context, req *task.CreateReq) (*task.CreateRes, error) {
 	res := new(task.CreateRes)
 	newTask, err := db.CreateTask(req)
+
 	if err != nil {
 		res.Base = pack.BuildBaseResp(errno.Errno{
 			Code: errno.TaskCreateFail,
 			Msg:  errno.CodeTag[errno.TaskCreateFail],
 		})
-		fmt.Println("error here", "----------------------------------------")
 		return res, err
 	}
 
-	fmt.Println("not error here", "-----------------------------------")
 	res.Base = pack.BuildBaseResp(errno.Errno{
 		Code: errno.Success,
 		Msg:  errno.CodeTag[errno.Success],

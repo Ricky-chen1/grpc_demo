@@ -5,11 +5,11 @@ package task;
 
 //待办事项模块微服务
 service TaskService {
-    rpc CreateTask(CreateReq) returns (CreateRes) {}
-    rpc GetListTask(GetListReq) returns (GetListRes) {}
-    rpc SearchTask(SearchReq) returns (SearchRes) {}
-    rpc UpdataTask(UpdateReq) returns (UpdateRes) {}
-    rpc DeleteTask(DeleteReq) returns (DeleteRes) {}
+    rpc TaskCreate(CreateReq) returns (CreateRes) {}
+    rpc TaskListGet(GetListReq) returns (GetListRes) {}
+    rpc TaskSearch(SearchReq) returns (SearchRes) {}
+    rpc TaskUpdate(UpdateReq) returns (UpdateRes) {}
+    rpc TaskDelete(DeleteReq) returns (DeleteRes) {}
 }
 
 message Task{

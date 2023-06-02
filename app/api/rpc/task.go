@@ -3,14 +3,14 @@ package rpc
 import (
 	"context"
 	"errors"
-	"fmt"
 	"grpc_demo/idl/pb/task"
+	"log"
 )
 
 func TaskCreate(ctx context.Context, req *task.CreateReq) (*task.Task, error) {
-	res, err := taskClient.CreateTask(ctx, req)
+	res, err := taskClient.TaskCreate(ctx, req)
 	if err != nil {
-		fmt.Println("create task error here", "--------------------------------")
+		log.Fatalf("task create failed %v", err)
 		return nil, errors.New("task rpc call failed")
 	}
 
@@ -18,9 +18,8 @@ func TaskCreate(ctx context.Context, req *task.CreateReq) (*task.Task, error) {
 }
 
 func TaskListGet(ctx context.Context, req *task.GetListReq) ([]*task.Task, error) {
-	res, err := taskClient.GetListTask(ctx, req)
+	res, err := taskClient.TaskListGet(ctx, req)
 	if err != nil {
-		fmt.Println("get taskList error here", "--------------------------------")
 		return nil, errors.New("task rpc call faild")
 	}
 
@@ -28,7 +27,7 @@ func TaskListGet(ctx context.Context, req *task.GetListReq) ([]*task.Task, error
 }
 
 func TaskSearch(ctx context.Context, req *task.SearchReq) ([]*task.Task, error) {
-	res, err := taskClient.SearchTask(ctx, req)
+	res, err := taskClient.TaskSearch(ctx, req)
 	if err != nil {
 		return nil, errors.New("task rpc call faild")
 	}
@@ -37,7 +36,7 @@ func TaskSearch(ctx context.Context, req *task.SearchReq) ([]*task.Task, error) 
 }
 
 func TaskUpdate(ctx context.Context, req *task.UpdateReq) (*task.Task, error) {
-	res, err := taskClient.UpdataTask(ctx, req)
+	res, err := taskClient.TaskUpdate(ctx, req)
 	if err != nil {
 		return nil, errors.New("task rpc call failed")
 	}
@@ -46,7 +45,7 @@ func TaskUpdate(ctx context.Context, req *task.UpdateReq) (*task.Task, error) {
 }
 
 func TaskDelete(ctx context.Context, req *task.DeleteReq) error {
-	_, err := taskClient.DeleteTask(ctx, req)
+	_, err := taskClient.TaskDelete(ctx, req)
 	if err != nil {
 		return errors.New("task rpc call failed")
 	}

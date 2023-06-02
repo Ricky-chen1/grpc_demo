@@ -2,8 +2,9 @@ package service
 
 import (
 	"context"
-	"grpc_demo/app/task/internal/pack"
+	"fmt"
 	"grpc_demo/app/task/internal/db"
+	"grpc_demo/app/task/internal/pack"
 	"grpc_demo/idl/pb/task"
 	"grpc_demo/pkg/errno"
 )
@@ -20,13 +21,20 @@ func (ts *TaskService) TaskCreate(ctx context.Context, req *task.CreateReq) (*ta
 	res := new(task.CreateRes)
 	newTask, err := db.CreateTask(req)
 	if err != nil {
-		res.Base.Code = errno.TaskCreateFail
-		res.Base.Message = errno.CodeTag[errno.TaskCreateFail]
+		res.Base = pack.BuildBaseResp(errno.Errno{
+			Code: errno.TaskCreateFail,
+			Msg:  errno.CodeTag[errno.TaskCreateFail],
+		})
+		fmt.Println("error here", "----------------------------------------")
 		return res, err
 	}
 
-	res.Base.Code = errno.Success
-	res.Base.Message = errno.CodeTag[errno.Success]
+	fmt.Println("not error here", "-----------------------------------")
+	res.Base = pack.BuildBaseResp(errno.Errno{
+		Code: errno.Success,
+		Msg:  errno.CodeTag[errno.Success],
+	})
+
 	res.Task = pack.BuildTask(newTask)
 	return res, nil
 }
@@ -36,13 +44,17 @@ func (ts *TaskService) TaskUpdate(ctx context.Context, req *task.UpdateReq) (*ta
 
 	newTask, err := db.UpdateTask(req)
 	if err != nil {
-		res.Base.Code = errno.TaskUpdateFail
-		res.Base.Message = errno.CodeTag[errno.TaskUpdateFail]
+		res.Base = pack.BuildBaseResp(errno.Errno{
+			Code: errno.TaskUpdateFail,
+			Msg:  errno.CodeTag[errno.TaskUpdateFail],
+		})
 		return res, nil
 	}
 
-	res.Base.Code = errno.Success
-	res.Base.Message = errno.CodeTag[errno.Success]
+	res.Base = pack.BuildBaseResp(errno.Errno{
+		Code: errno.Success,
+		Msg:  errno.CodeTag[errno.Success],
+	})
 	res.Task = pack.BuildTask(newTask)
 	return res, nil
 }
@@ -52,13 +64,17 @@ func (ts *TaskService) TaskListGet(ctx context.Context, req *task.GetListReq) (*
 
 	newTasks, err := db.GetTaskList(req)
 	if err != nil {
-		res.Base.Code = errno.GetTaskListFail
-		res.Base.Message = errno.CodeTag[errno.GetTaskListFail]
+		res.Base = pack.BuildBaseResp(errno.Errno{
+			Code: errno.GetTaskListFail,
+			Msg:  errno.CodeTag[errno.GetTaskListFail],
+		})
 		return res, nil
 	}
 
-	res.Base.Code = errno.Success
-	res.Base.Message = errno.CodeTag[errno.Success]
+	res.Base = pack.BuildBaseResp(errno.Errno{
+		Code: errno.Success,
+		Msg:  errno.CodeTag[errno.Success],
+	})
 	res.Task = pack.BuildTaskList(newTasks)
 
 	return res, nil
@@ -69,13 +85,16 @@ func (ts *TaskService) TaskSearch(ctx context.Context, req *task.SearchReq) (*ta
 
 	newTasks, err := db.SearchTask(req)
 	if err != nil {
-		res.Base.Code = errno.TaskSearchFail
-		res.Base.Message = errno.CodeTag[errno.TaskSearchFail]
-		return res, nil
+		res.Base = pack.BuildBaseResp(errno.Errno{
+			Code: errno.TaskSearchFail,
+			Msg:  errno.CodeTag[errno.TaskSearchFail],
+		})
 	}
 
-	res.Base.Code = errno.Success
-	res.Base.Message = errno.CodeTag[errno.Success]
+	res.Base = pack.BuildBaseResp(errno.Errno{
+		Code: errno.Success,
+		Msg:  errno.CodeTag[errno.Success],
+	})
 	res.Task = pack.BuildTaskList(newTasks)
 
 	return res, nil
@@ -85,13 +104,17 @@ func (ts *TaskService) TaskDelete(ctx context.Context, req *task.DeleteReq) (*ta
 	res := new(task.DeleteRes)
 
 	if err := db.DeleteTask(req); err != nil {
-		res.Base.Code = errno.TaskDeleteFail
-		res.Base.Message = errno.CodeTag[errno.TaskDeleteFail]
+		res.Base = pack.BuildBaseResp(errno.Errno{
+			Code: errno.TaskDeleteFail,
+			Msg:  errno.CodeTag[errno.TaskDeleteFail],
+		})
 		return res, err
 	}
 
-	res.Base.Code = errno.Success
-	res.Base.Message = errno.CodeTag[errno.Success]
+	res.Base = pack.BuildBaseResp(errno.Errno{
+		Code: errno.Success,
+		Msg:  errno.CodeTag[errno.Success],
+	})
 
 	return res, nil
 }

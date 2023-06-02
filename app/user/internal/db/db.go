@@ -3,14 +3,15 @@ package db
 import (
 	"grpc_demo/app/user/internal/model"
 	"grpc_demo/idl/pb/user"
+	"grpc_demo/pkg/util"
 )
 
 func CreateUser(req *user.RegisterReq) error {
 	user := model.User{
+		Id:       util.NewUuid(),
 		Username: req.Username,
 	}
 
-	//加密在哪一层进行?
 	if err := user.SetPassword(req.Password); err != nil {
 		return err
 	}

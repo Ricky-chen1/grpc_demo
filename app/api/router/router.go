@@ -12,8 +12,8 @@ func NewRouter() *gin.Engine {
 	r.POST("/user/register", handler.UserRegister)
 	r.POST("/user/login", handler.UserLogin)
 
-	r.Use(middleware.JWT())
 	v1 := r.Group("/api/v1")
+	v1.Use(middleware.JWT())
 	{
 		v1.POST("/task", handler.TaskCreate)
 		v1.PUT("/task", handler.TaskUpdate)

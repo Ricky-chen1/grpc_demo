@@ -11,30 +11,48 @@ var (
 	Mysql   *mysql
 	Service *service
 	Etcd    *etcd
-	C       *config
 )
 
-func Init() {
+func Init(service string) {
+
 	viper.SetConfigName("conf")
-	viper.AddConfigPath("/homework/grpc_demo/conf")
 	viper.SetConfigType("yml")
+	viper.AddConfigPath("/homework/grpc_demo/conf")
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			log.Fatalf("config not found %v", err)
+			log.Panicln("could not find config files")
 		} else {
-			log.Fatalf("other error %v", err)
+			log.Panicln("read config error")
 		}
+		log.Fatal(err)
 	}
 
-	if err := viper.Unmarshal(&C); err != nil {
-		log.Fatalf("mapping config error %v", err)
-		panic(err)
+	configMapping(service) // 映射配置
+}
+
+func configMapping(srv string) {
+	c := new(config)
+	if err := viper.Unmarshal(&c); err != nil {
+		log.Fatal(err)
 	}
 
-	Server = &C.Server
+	Server = &c.Server
 	Server.Secret = []byte(viper.GetString("server.jwt-secret"))
 
-	Mysql = &C.Mysql
+	Etcd = &c.Etcd
 
+	Mysql = &c.Mysql
+
+	Service = GetService(srv)
+}
+
+func GetService(srvname string) *service {
+
+	addrlist := viper.GetStringSlice("services." + srvname + ".addr")
+
+	return &service{
+		Name: viper.GetString("services." + srvname + ".name"),
+		Addr: addrlist[0],
+	}
 }

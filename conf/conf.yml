@@ -24,3 +24,6 @@ mysql:
   database: grpc_demo
   addr: 127.0.0.1:3306
   charset: utf8mb4
+
+etcd:
+  addr: 127.0.0.1:2379

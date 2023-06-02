@@ -17,13 +17,13 @@ func TaskCreate(c *gin.Context) {
 	}
 
 	// 通过封装的rpc包调用pb中rpc方法
-	err := rpc.TaskCreate(c, req)
+	res, err := rpc.TaskCreate(c, req)
 	if err != nil {
 		BuildFailResponse(c, errno.CallRPCFailed, errno.CodeTag[errno.CallRPCFailed])
 		return
 	}
 
-	BuildSuccessResponse(c, errno.Success, errno.CodeTag[errno.Success], nil)
+	BuildSuccessResponse(c, errno.Success, errno.CodeTag[errno.Success], res)
 }
 
 func TaskUpdate(c *gin.Context) {

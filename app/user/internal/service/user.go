@@ -21,13 +21,17 @@ func (us *UserService) UserRegister(ctx context.Context, req *user.RegisterReq) 
 
 	//数据库交互
 	if err := db.CreateUser(req); err != nil {
-		res.Base.Code = errno.UserCreateFail
-		res.Base.Message = errno.CodeTag[errno.UserCreateFail]
+		res.Base = pack.BuildBaseResp(errno.Errno{
+			Code: errno.UserCreateFail,
+			Msg:  errno.CodeTag[errno.UserCreateFail],
+		})
 		return res, err
 	}
 
-	res.Base.Code = errno.Success
-	res.Base.Message = errno.CodeTag[errno.Success]
+	res.Base = pack.BuildBaseResp(errno.Errno{
+		Code: errno.Success,
+		Msg:  errno.CodeTag[errno.Success],
+	})
 	return res, nil
 
 }
@@ -37,19 +41,26 @@ func (us *UserService) UserLogin(ctx context.Context, req *user.LoginReq) (*user
 	//与数据库交互
 	newUser, err := db.GetUserByName(req.Username)
 	if err != nil {
-		res.Base.Code = errno.UserLoginFail
-		res.Base.Message = errno.CodeTag[errno.UserLoginFail]
+		res.Base = pack.BuildBaseResp(errno.Errno{
+			Code: errno.UserLoginFail,
+			Msg:  errno.CodeTag[errno.UserLoginFail],
+		})
 		return res, err
 	}
 
 	if err := newUser.CheckPassword(req.Password); err != nil {
-		res.Base.Code = errno.CheckPasswordFail
-		res.Base.Message = errno.CodeTag[errno.CheckPasswordFail]
+		pack.BuildBaseResp(errno.Errno{
+			Code: errno.CheckPasswordFail,
+			Msg:  errno.CodeTag[errno.CheckPasswordFail],
+		})
 		return res, err
 	}
 
-	res.Base.Code = errno.Success
-	res.Base.Message = errno.CodeTag[errno.Success]
+	//base 赋值 不能访问空指针对象成员，如Base.Code
+	res.Base = pack.BuildBaseResp(errno.Errno{
+		Code: errno.Success,
+		Msg:  errno.CodeTag[errno.Success],
+	})
 	res.User = pack.BuildUser(*newUser)
 
 	return res, nil

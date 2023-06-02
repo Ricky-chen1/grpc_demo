@@ -3,6 +3,7 @@ package pack
 import (
 	"grpc_demo/app/task/internal/model"
 	"grpc_demo/idl/pb/task"
+	"grpc_demo/pkg/errno"
 )
 
 func BuildTask(t *model.Task) *task.Task {
@@ -21,4 +22,11 @@ func BuildTaskList(items []model.Task) []*task.Task {
 		list = append(list, task)
 	}
 	return list
+}
+
+func BuildBaseResp(err errno.Errno) *task.Base {
+	return &task.Base{
+		Code:    uint64(err.Code),
+		Message: err.Msg,
+	}
 }

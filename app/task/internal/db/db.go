@@ -7,7 +7,7 @@ import (
 )
 
 func CreateTask(req *task.CreateReq) (*model.Task, error) {
-	task := &model.Task{
+	task := model.Task{
 		User_id: req.UserId,
 		Id:      util.NewUuid(),
 		Title:   req.Title,
@@ -15,11 +15,11 @@ func CreateTask(req *task.CreateReq) (*model.Task, error) {
 		Status:  0,
 	}
 
-	err := DB.Model(&model.Task{}).Create(task).Error
+	err := DB.Model(&model.Task{}).Create(&task).Error
 	if err != nil {
 		return nil, err
 	}
-	return task, nil
+	return &task, nil
 }
 
 func GetTaskList(req *task.GetListReq) ([]model.Task, error) {
@@ -47,7 +47,7 @@ func UpdateTask(req *task.UpdateReq) (*model.Task, error) {
 		return nil, err
 	}
 	task.Status = int(req.Status)
-	if err := DB.Model(&model.Task{}).Save(task).Error; err != nil {
+	if err := DB.Model(&model.Task{}).Save(&task).Error; err != nil {
 		return nil, err
 	}
 	return &task, nil
@@ -55,7 +55,7 @@ func UpdateTask(req *task.UpdateReq) (*model.Task, error) {
 
 func DeleteTask(req *task.DeleteReq) error {
 	var task model.Task
-	if err := DB.Model(&model.Task{}).Where("id = ?", req.Id).Delete(task).Error; err != nil {
+	if err := DB.Model(&model.Task{}).Where("id = ?", req.Id).Delete(&task).Error; err != nil {
 		return err
 	}
 	return nil

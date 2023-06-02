@@ -8,7 +8,7 @@ type server struct {
 
 type service struct {
 	Name string
-	Addr []string
+	Addr string
 }
 
 type mysql struct {
@@ -24,7 +24,8 @@ type etcd struct {
 }
 
 type config struct {
-	Server   server
-	Mysql    mysql
-	Services map[string]*service
+	Etcd    etcd
+	Server  server
+	Mysql   mysql
+	Service service
 }

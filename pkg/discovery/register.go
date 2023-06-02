@@ -36,7 +36,7 @@ func NewRegister(etcdAddrs []string, logger *logrus.Logger) *Register {
 	}
 }
 
-// Register a user
+// Register a service
 func (r *Register) Register(srvInfo Server, ttl int64) (chan<- struct{}, error) {
 	var err error
 
@@ -107,6 +107,7 @@ func (r *Register) keepAlive() {
 	for {
 		select {
 		case <-r.closeCh:
+			ticker.Stop()
 			if err := r.unregister(); err != nil {
 				r.logger.Error("unregister failed, error: ", err)
 			}

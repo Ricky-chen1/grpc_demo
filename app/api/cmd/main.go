@@ -7,8 +7,12 @@ import (
 	"log"
 )
 
+const (
+	srvName = "api"
+)
+
 func Init() {
-	conf.Init()
+	conf.Init(srvName)
 	rpc.Init()
 }
 
@@ -17,7 +21,8 @@ func main() {
 	Init()
 
 	r := router.NewRouter()
-	grpcAddress := conf.C.Services["api"].Addr[0]
+	grpcAddress := conf.Service.Addr
+
 	if err := r.Run(grpcAddress); err != nil {
 		log.Fatal("gateway server start error")
 		panic(err)

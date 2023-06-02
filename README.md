@@ -48,4 +48,14 @@
 │   └── user.go
 ├── middleware          # gin中间件
 ├── router              # 路由模块
-└── rpc                 # rpc调用
+└── rpc                 # rpc调用  
+
+```
+### 手动启动  
+
+1.保证mysql,etcd等服务活跃,在每个模块下的cmd执行以下命令  
+
+```go
+go run main.go
+```
+
